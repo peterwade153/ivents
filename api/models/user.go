@@ -65,20 +65,6 @@ func (u *User) Validate(action string) error{
 			return errors.New("Password is required")
 		}
 		return nil
-	case "update":
-		if u.FirstName == ""{
-			return errors.New("FirstName is required")
-		}
-		if u.LastName == ""{
-			return errors.New("LastName is required")
-		}
-		if u.Email == ""{
-			return errors.New("Email is required")
-		}
-		if err := checkmail.ValidateFormat(u.Email); err != nil {
-			return errors.New("Invalid Email")
-		}
-		return nil
 	default:  // this is the create were all fields are required
 		if u.FirstName == ""{
 			return errors.New("FirstName is required")
