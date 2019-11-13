@@ -45,9 +45,11 @@ func UserSignUp(w http.ResponseWriter, r *http.Request){
 	userCreated, err := user.SaveUser()
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
+		return
 	}
 	resp["user"] = userCreated
 	responses.JSON(w, http.StatusCreated, resp)
+	return
 }
 
 // Login signs in users
@@ -98,6 +100,7 @@ func Login(w http.ResponseWriter, r *http.Request){
 
 	resp["token"] = token
 	responses.JSON(w, http.StatusOK, resp)
+	return
 }
 
 // GetAllUsers returns all users
@@ -110,5 +113,6 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request){
 		return
 	}
 	responses.JSON(w, http.StatusCreated, users)
+	return
 }
 
