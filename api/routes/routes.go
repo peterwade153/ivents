@@ -20,7 +20,8 @@ func Handlers() *mux.Router{
 	r.Use(middlewares.SetContentTypeMiddleware) // setting content-type to json
 
 	r.HandleFunc("/", home).Methods("GET")
-	r.HandleFunc("/users/register", controllers.CreateUser).Methods("POST")
+	r.HandleFunc("/users/register", controllers.UserSignUp).Methods("POST")
+	r.HandleFunc("/users/login", controllers.Login).Methods("POST")
 	r.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
 	
 	return r

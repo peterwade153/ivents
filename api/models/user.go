@@ -27,9 +27,12 @@ func HashPassword(password string) (string, error){
 }
 
 // CheckPasswordHash enables checking password hash and match password passed
-func CheckPasswordHash(password, hash string) bool{
+func CheckPasswordHash(password, hash string) error{
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+	if err != nil {
+		return errors.New("password incorrect")
+	}
+	return nil
 }
 
 // BeforeSave will enables password hashing
@@ -54,7 +57,7 @@ func (u *User) Prepare(){
 // Validate validated data for login, profile update, picture upload, create users
 func (u *User) Validate(action string) error{
 	switch strings.ToLower(action) {
-	case "login_data":
+	case "login":
 		if u.Email == ""{
 			return errors.New("Email is required")
 		}
@@ -108,21 +111,16 @@ func (u *User) SaveUser()(*User, error){
 	return u, nil
 }
 
-// func (u *User) UpdateUser()(*User, error){
-// 	var err error
-
-// 	// todo
-// }
-
-// UserExists checks if user exists already
-func (u *User) UserExists() error{
+// GetUser checks if user exists already
+func (u *User) GetUser() (*User, error){
 	account := &User{}
-	if GetDb().Debug().Table("users").Where("email = ?", u.Email).First(account).RecordNotFound(){
-		return nil
+	if err := GetDb().Debug().Table("users").Where("email = ?", u.Email).First(account).Error; err != nil{
+		return nil, err
 	}
-	return errors.New("User registered already")
+	return account, nil
 }
 
+// GetAllUsers returns all the user
 func (u *User) GetAllUsers() (*[]User, error){
 	var err error
 	users := []User{}
