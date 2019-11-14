@@ -7,10 +7,10 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-
-func CreateToken(uid uint) (string, error){
+// EncodeAuthToken creates authentication token
+func EncodeAuthToken(uid uint) (string, error){
 	claims := jwt.MapClaims{}
-	claims["user_id"] =  uid
+	claims["userID"] =  uid
 	claims["IssuedAt"] = time.Now().Unix()
 	claims["ExpiresAt"] = time.Now().Add(time.Hour *24).Unix()
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), claims)

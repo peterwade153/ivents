@@ -39,7 +39,7 @@ func init(){
 		fmt.Printf("We are connected to the database %s", DbName)
 	}
 
-	db.Debug().AutoMigrate(&User{}) //database migration
+	db.Debug().AutoMigrate(&User{}, &Venue{}) //database migration
 }
 
 // GetDb will return the db instance
