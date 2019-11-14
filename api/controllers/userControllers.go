@@ -92,7 +92,7 @@ func Login(w http.ResponseWriter, r *http.Request){
 		responses.JSON(w, http.StatusForbidden, resp)
 		return
 	}
-	token, err := utils.CreateToken(usr.ID)
+	token, err := utils.EncodeAuthToken(usr.ID)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return

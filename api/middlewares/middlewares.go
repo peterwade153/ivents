@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"context"
 	"net/http"
 	"strings"
 	"os"
@@ -31,7 +32,7 @@ func AuthJwtVerify(next http.Handler) http.Handler {
 			return
 		}
 
-		_, err := jwt.Parse(header, func(token *jwt.Token) (interface{}, error){
+		token, err := jwt.Parse(header, func(token *jwt.Token) (interface{}, error){
 			return []byte(os.Getenv("SECRET")), nil
 		})
 		if err != nil {
@@ -40,6 +41,9 @@ func AuthJwtVerify(next http.Handler) http.Handler {
 			responses.JSON(w, http.StatusForbidden, resp)
 			return
 		}
-		next.ServeHTTP(w, r)
+		claims, _ := token.Claims.(jwt.MapClaims)
+
+		ctx := context.WithValue(r.Context(), "userID", claims["userID"])
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
