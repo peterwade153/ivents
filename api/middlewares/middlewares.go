@@ -43,7 +43,7 @@ func AuthJwtVerify(next http.Handler) http.Handler {
 		}
 		claims, _ := token.Claims.(jwt.MapClaims)
 
-		ctx := context.WithValue(r.Context(), "userID", claims["userID"])
+		ctx := context.WithValue(r.Context(), "userID", claims["userID"])  // adding the user_id to the context
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

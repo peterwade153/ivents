@@ -9,6 +9,7 @@ import (
 	"github.com/peterwade153/ivents/api/responses"
 )
 
+// CreateVenue parses request, validates data and saves the new venue
 func CreateVenue(w http.ResponseWriter, r *http.Request){
 	var resp = map[string]interface{}{"status": "success", "message": "Venue successfully created"}
 
@@ -41,7 +42,6 @@ func CreateVenue(w http.ResponseWriter, r *http.Request){
 	}
 
 	venue.UserID = uint(user)
-
 
 	venueCreated, err := venue.Save()
 	if err != nil{
