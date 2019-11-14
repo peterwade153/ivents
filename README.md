@@ -1,4 +1,4 @@
-https://github.com/peterwade153/ivents/workflows/Go/badge.svg
+![](https://github.com/peterwade153/ivents/workflows/Go/badge.svg)
 # ivents
 
 ### ivents is a one stop center for all venues for all types events
