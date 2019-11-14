@@ -1,9 +1,9 @@
 package controllers
 
- import (
+import (
 	"encoding/json"
-	"net/http"
 	"io/ioutil"
+	"net/http"
 
 	"github.com/peterwade153/ivents/api/models"
 	"github.com/peterwade153/ivents/api/responses"
@@ -11,7 +11,7 @@ package controllers
 )
 
 // UserSignUp controller for creating new users
-func UserSignUp(w http.ResponseWriter, r *http.Request){
+func UserSignUp(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Registered successfully"}
 
 	user := &models.User{}
@@ -53,7 +53,7 @@ func UserSignUp(w http.ResponseWriter, r *http.Request){
 }
 
 // Login signs in users
-func Login(w http.ResponseWriter, r *http.Request){
+func Login(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "logged in"}
 
 	user := &models.User{}
@@ -104,9 +104,9 @@ func Login(w http.ResponseWriter, r *http.Request){
 }
 
 // GetAllUsers returns all users
-func GetAllUsers(w http.ResponseWriter, r *http.Request){
+func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
-	
+
 	users, err := user.GetAllUsers()
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
@@ -115,4 +115,3 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	responses.JSON(w, http.StatusCreated, users)
 	return
 }
-

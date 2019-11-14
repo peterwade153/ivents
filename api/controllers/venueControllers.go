@@ -2,15 +2,15 @@ package controllers
 
 import (
 	"encoding/json"
-	"net/http"
 	"io/ioutil"
+	"net/http"
 
 	"github.com/peterwade153/ivents/api/models"
 	"github.com/peterwade153/ivents/api/responses"
 )
 
 // CreateVenue parses request, validates data and saves the new venue
-func CreateVenue(w http.ResponseWriter, r *http.Request){
+func CreateVenue(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Venue successfully created"}
 
 	user := r.Context().Value("userID").(float64)
@@ -29,12 +29,12 @@ func CreateVenue(w http.ResponseWriter, r *http.Request){
 
 	venue.Prepare()
 
-	if err = venue.Validate(""); err != nil{
+	if err = venue.Validate(""); err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
 
-	if vne, _ := venue.GetVenue(); vne != nil{
+	if vne, _ := venue.GetVenue(); vne != nil {
 		resp["status"] = "failed"
 		resp["message"] = "Venue already registered, please choose another name"
 		responses.JSON(w, http.StatusBadRequest, resp)
@@ -44,7 +44,7 @@ func CreateVenue(w http.ResponseWriter, r *http.Request){
 	venue.UserID = uint(user)
 
 	venueCreated, err := venue.Save()
-	if err != nil{
+	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}

@@ -10,15 +10,15 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var db *gorm.DB 
+var db *gorm.DB
 
-func init(){
+func init() {
 	fmt.Println("Setting up Database")
 
 	var err error
 
 	err = godotenv.Load()
-	if err != nil{
+	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
@@ -43,6 +43,6 @@ func init(){
 }
 
 // GetDb will return the db instance
-func GetDb() *gorm.DB{
+func GetDb() *gorm.DB {
 	return db
 }

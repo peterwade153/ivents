@@ -3,8 +3,8 @@ package middlewares
 import (
 	"context"
 	"net/http"
-	"strings"
 	"os"
+	"strings"
 
 	jwt "github.com/dgrijalva/jwt-go"
 
@@ -27,12 +27,12 @@ func AuthJwtVerify(next http.Handler) http.Handler {
 		var header = r.Header.Get("Authorization")
 		header = strings.TrimSpace(header)
 
-		if header == ""{
+		if header == "" {
 			responses.JSON(w, http.StatusForbidden, resp)
 			return
 		}
 
-		token, err := jwt.Parse(header, func(token *jwt.Token) (interface{}, error){
+		token, err := jwt.Parse(header, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("SECRET")), nil
 		})
 		if err != nil {
@@ -43,7 +43,7 @@ func AuthJwtVerify(next http.Handler) http.Handler {
 		}
 		claims, _ := token.Claims.(jwt.MapClaims)
 
-		ctx := context.WithValue(r.Context(), "userID", claims["userID"])  // adding the user_id to the context
+		ctx := context.WithValue(r.Context(), "userID", claims["userID"]) // adding the user_id to the context
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
