@@ -29,6 +29,7 @@ func Handlers() *mux.Router {
 	s.HandleFunc("/venues", controllers.CreateVenue).Methods("POST")
 	s.HandleFunc("/venues", controllers.GetVenues).Methods("GET")
 	s.HandleFunc("/venues/{id}", controllers.UpdateVenue).Methods("PUT")
+	s.HandleFunc("/venues/{id}", controllers.DeleteVenue).Methods("DELETE")
 
 	return r
 }
