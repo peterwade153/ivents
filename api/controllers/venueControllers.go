@@ -110,7 +110,7 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func DeleteVenue(w http.ResponseWriter, r *http.Request){
+func DeleteVenue(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Venue deleted successfully"}
 
 	vars := mux.Vars(r)
