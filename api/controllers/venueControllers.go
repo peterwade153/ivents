@@ -54,9 +54,9 @@ func CreateVenue(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func GetVenues(w http.ResponseWriter, r *http.Request){
+func GetVenues(w http.ResponseWriter, r *http.Request) {
 	venues, err := models.GetVenues()
-	if err != nil{
+	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}

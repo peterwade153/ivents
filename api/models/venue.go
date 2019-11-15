@@ -70,9 +70,9 @@ func (v *Venue) GetVenue() (*Venue, error) {
 	return venue, nil
 }
 
-func GetVenues() (*[]Venue, error){
+func GetVenues() (*[]Venue, error) {
 	venues := []Venue{}
-	if err := GetDb().Debug().Table("venues").Find(&venues).Error; err != nil{
+	if err := GetDb().Debug().Table("venues").Find(&venues).Error; err != nil {
 		return &[]Venue{}, err
 	}
 	return &venues, nil
