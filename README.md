@@ -26,7 +26,8 @@ API endpoint can be accessed. Via http://localhost:5000/
 
 Request |       Endpoints                 |       Functionality
 --------|---------------------------------|--------------------------------
-POST    |  /register                      |   User register ( firstname, lastname, email, password)
-POST    |  /login                         |   User login    ( email, password)
+POST    |  /register                      |   User Signup ( firstname, lastname, email, password)
+POST    |  /login                         |   User Login    ( email, password)
 POST    |  /api/venues                    |   Add Venue     ( name, description, location, capacity, category)
 GET     |  /api/venues                    |   View Venues
+PUT     |  /api/venues/id                 |   Update Venue     ( name, description, location, capacity, category)
