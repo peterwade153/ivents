@@ -105,9 +105,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 // GetAllUsers returns all users
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	user := &models.User{}
-
-	users, err := user.GetAllUsers()
+	users, err := models.GetAllUsers()
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
