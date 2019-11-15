@@ -77,3 +77,18 @@ func GetVenues() (*[]Venue, error) {
 	}
 	return &venues, nil
 }
+
+func GetVenueById(id int) (*Venue, error) {
+	venue := &Venue{}
+	if err := GetDb().Debug().Table("venues").Where("id = ?", id).First(venue).Error; err != nil {
+		return nil, err
+	}
+	return venue, nil
+}
+
+func (v *Venue) UpdateVenue(id int) (*Venue, error) {
+	if err := GetDb().Debug().Table("venues").Where("id = ?", id).Updates(Venue{Name: v.Name, Description: v.Description, Location: v.Location, Capacity: v.Capacity, Category: v.Category}).Error; err != nil {
+		return &Venue{}, err
+	}
+	return v, nil
+}

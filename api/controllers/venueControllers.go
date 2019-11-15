@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
 
 	"github.com/peterwade153/ivents/api/models"
 	"github.com/peterwade153/ivents/api/responses"
@@ -61,5 +64,48 @@ func GetVenues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responses.JSON(w, http.StatusCreated, venues)
+	return
+}
+
+func UpdateVenue(w http.ResponseWriter, r *http.Request) {
+	var resp = map[string]interface{}{"status": "success", "message": "Venue updated successfully"}
+
+	vars := mux.Vars(r)
+
+	user := r.Context().Value("userID").(float64)
+	userID := uint(user)
+
+	id, _ := strconv.Atoi(vars["id"])
+
+	venue, err := models.GetVenueById(id)
+
+	if venue.UserID != userID {
+		resp["status"] = "failed"
+		resp["message"] = "Unauthorized update"
+		responses.JSON(w, http.StatusUnauthorized, resp)
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
+
+	venueUpdate := models.Venue{}
+	if err = json.Unmarshal(body, &venueUpdate); err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
+
+	venueUpdate.Prepare()
+
+	_, err = venueUpdate.UpdateVenue(id)
+	if err != nil {
+		responses.ERROR(w, http.StatusBadRequest, err)
+		return
+	}
+
+	responses.JSON(w, http.StatusCreated, resp)
 	return
 }
