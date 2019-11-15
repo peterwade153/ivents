@@ -106,12 +106,10 @@ func (u *User) GetUser() (*User, error) {
 }
 
 // GetAllUsers returns all the user
-func (u *User) GetAllUsers() (*[]User, error) {
-	var err error
+func GetAllUsers() (*[]User, error) {
 	users := []User{}
-	err = GetDb().Debug().Model(&u).Find(&users).Error
-	if err != nil {
+	if err := GetDb().Debug().Table("users").Find(&users).Error; err != nil {
 		return &[]User{}, err
 	}
-	return &users, err
+	return &users, nil
 }

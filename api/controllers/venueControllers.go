@@ -53,3 +53,13 @@ func CreateVenue(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusCreated, resp)
 	return
 }
+
+func GetVenues(w http.ResponseWriter, r *http.Request){
+	venues, err := models.GetVenues()
+	if err != nil{
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	responses.JSON(w, http.StatusCreated, venues)
+	return
+}

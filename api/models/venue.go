@@ -49,7 +49,6 @@ func (v *Venue) Validate(action string) error {
 		}
 		return nil
 	}
-
 }
 
 func (v *Venue) Save() (*Venue, error) {
@@ -69,4 +68,12 @@ func (v *Venue) GetVenue() (*Venue, error) {
 		return nil, err
 	}
 	return venue, nil
+}
+
+func GetVenues() (*[]Venue, error){
+	venues := []Venue{}
+	if err := GetDb().Debug().Table("venues").Find(&venues).Error; err != nil{
+		return &[]Venue{}, err
+	}
+	return &venues, nil
 }

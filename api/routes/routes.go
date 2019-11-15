@@ -27,6 +27,7 @@ func Handlers() *mux.Router {
 	s.Use(middlewares.AuthJwtVerify)
 	s.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
 	s.HandleFunc("/venues", controllers.CreateVenue).Methods("POST")
+	s.HandleFunc("/venues", controllers.GetVenues).Methods("GET")
 
 	return r
 }
