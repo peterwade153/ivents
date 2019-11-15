@@ -81,7 +81,7 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 
 	if venue.UserID != userID {
 		resp["status"] = "failed"
-		resp["message"] = "Unauthorized update"
+		resp["message"] = "Unauthorized venue update"
 		responses.JSON(w, http.StatusUnauthorized, resp)
 		return
 	}
@@ -102,10 +102,38 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 
 	_, err = venueUpdate.UpdateVenue(id)
 	if err != nil {
-		responses.ERROR(w, http.StatusBadRequest, err)
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
 	responses.JSON(w, http.StatusCreated, resp)
+	return
+}
+
+func DeleteVenue(w http.ResponseWriter, r *http.Request) {
+	var resp = map[string]interface{}{"status": "success", "message": "Venue deleted successfully"}
+
+	vars := mux.Vars(r)
+
+	user := r.Context().Value("userID").(float64)
+	userID := uint(user)
+
+	id, _ := strconv.Atoi(vars["id"])
+
+	venue, err := models.GetVenueById(id)
+
+	if venue.UserID != userID {
+		resp["status"] = "failed"
+		resp["message"] = "Unauthorized venue delete"
+		responses.JSON(w, http.StatusUnauthorized, resp)
+		return
+	}
+
+	err = models.DeleteVenue(id)
+	if err != nil {
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	responses.JSON(w, http.StatusUnauthorized, resp)
 	return
 }

@@ -92,3 +92,10 @@ func (v *Venue) UpdateVenue(id int) (*Venue, error) {
 	}
 	return v, nil
 }
+
+func DeleteVenue(id int) error {
+	if err := GetDb().Debug().Table("venues").Where("id = ?", id).Delete(&Venue{}).Error; err != nil {
+		return err
+	}
+	return nil
+}
