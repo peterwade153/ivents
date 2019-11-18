@@ -88,11 +88,11 @@ func GetVenueById(id int, db *gorm.DB) (*Venue, error) {
 
 func (v *Venue) UpdateVenue(id int, db *gorm.DB) (*Venue, error) {
 	if err := db.Debug().Table("venues").Where("id = ?", id).Updates(Venue{
-		Name: v.Name, 
-		Description: v.Description, 
-		Location: v.Location, 
-		Capacity: v.Capacity, 
-		Category: v.Category}).Error; err != nil {
+		Name:        v.Name,
+		Description: v.Description,
+		Location:    v.Location,
+		Capacity:    v.Capacity,
+		Category:    v.Category}).Error; err != nil {
 		return &Venue{}, err
 	}
 	return v, nil
