@@ -85,11 +85,11 @@ func (u *User) Validate(action string) error {
 }
 
 // SaveUser saves user to the database
-func (u *User) SaveUser() (*User, error) {
+func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	var err error
 
 	// Debug a single operation, show detailed log for this operation
-	err = GetDb().Debug().Create(&u).Error
+	err = db.Debug().Create(&u).Error
 	if err != nil {
 		return &User{}, err
 	}
@@ -97,18 +97,18 @@ func (u *User) SaveUser() (*User, error) {
 }
 
 // GetUser checks if user exists already
-func (u *User) GetUser() (*User, error) {
+func (u *User) GetUser(db *gorm.DB) (*User, error) {
 	account := &User{}
-	if err := GetDb().Debug().Table("users").Where("email = ?", u.Email).First(account).Error; err != nil {
+	if err := db.Debug().Table("users").Where("email = ?", u.Email).First(account).Error; err != nil {
 		return nil, err
 	}
 	return account, nil
 }
 
 // GetAllUsers returns all the user
-func GetAllUsers() (*[]User, error) {
+func GetAllUsers(db *gorm.DB) (*[]User, error) {
 	users := []User{}
-	if err := GetDb().Debug().Table("users").Find(&users).Error; err != nil {
+	if err := db.Debug().Table("users").Find(&users).Error; err != nil {
 		return &[]User{}, err
 	}
 	return &users, nil

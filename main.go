@@ -2,17 +2,27 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/peterwade153/ivents/api/routes"
+	"github.com/joho/godotenv"
+
+	"github.com/peterwade153/ivents/api/controllers"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	app := controllers.App{}
+	app.Initialize(
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PASSWORD"))
 
 	port := os.Getenv("PORT")
 
-	http.Handle("/", routes.Handlers())
-	log.Printf("\nServer starting on port '%s'", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	app.RunServer(port)
 }
