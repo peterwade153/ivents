@@ -11,7 +11,7 @@ import (
 )
 
 // UserSignUp controller for creating new users
-func UserSignUp(w http.ResponseWriter, r *http.Request) {
+func (a *App) UserSignUp(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Registered successfully"}
 
 	user := &models.User{}
@@ -27,7 +27,7 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	usr, _ := user.GetUser()
+	usr, _ := user.GetUser(a.DB)
 	if usr != nil {
 		resp["status"] = "failed"
 		resp["message"] = "User already registered, please login"
@@ -42,7 +42,7 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
-	userCreated, err := user.SaveUser()
+	userCreated, err := user.SaveUser(a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
@@ -53,7 +53,7 @@ func UserSignUp(w http.ResponseWriter, r *http.Request) {
 }
 
 // Login signs in users
-func Login(w http.ResponseWriter, r *http.Request) {
+func (a *App) Login(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "logged in"}
 
 	user := &models.User{}
@@ -77,7 +77,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	usr, _ := user.GetUser()
+	usr, _ := user.GetUser(a.DB)
 	if usr == nil { // user is not registered
 		resp["status"] = "failed"
 		resp["message"] = "Login failed, please signup"
@@ -104,8 +104,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetAllUsers returns all users
-func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	users, err := models.GetAllUsers()
+func (a *App) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	users, err := models.GetAllUsers(a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return

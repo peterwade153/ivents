@@ -13,7 +13,7 @@ import (
 )
 
 // CreateVenue parses request, validates data and saves the new venue
-func CreateVenue(w http.ResponseWriter, r *http.Request) {
+func (a *App) CreateVenue(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Venue successfully created"}
 
 	user := r.Context().Value("userID").(float64)
@@ -37,7 +37,7 @@ func CreateVenue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if vne, _ := venue.GetVenue(); vne != nil {
+	if vne, _ := venue.GetVenue(a.DB); vne != nil {
 		resp["status"] = "failed"
 		resp["message"] = "Venue already registered, please choose another name"
 		responses.JSON(w, http.StatusBadRequest, resp)
@@ -46,7 +46,7 @@ func CreateVenue(w http.ResponseWriter, r *http.Request) {
 
 	venue.UserID = uint(user)
 
-	venueCreated, err := venue.Save()
+	venueCreated, err := venue.Save(a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
@@ -57,17 +57,17 @@ func CreateVenue(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func GetVenues(w http.ResponseWriter, r *http.Request) {
-	venues, err := models.GetVenues()
+func (a *App) GetVenues(w http.ResponseWriter, r *http.Request) {
+	venues, err := models.GetVenues(a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	responses.JSON(w, http.StatusCreated, venues)
+	responses.JSON(w, http.StatusOK, venues)
 	return
 }
 
-func UpdateVenue(w http.ResponseWriter, r *http.Request) {
+func (a *App) UpdateVenue(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Venue updated successfully"}
 
 	vars := mux.Vars(r)
@@ -77,7 +77,7 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 
 	id, _ := strconv.Atoi(vars["id"])
 
-	venue, err := models.GetVenueById(id)
+	venue, err := models.GetVenueById(id, a.DB)
 
 	if venue.UserID != userID {
 		resp["status"] = "failed"
@@ -100,7 +100,7 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 
 	venueUpdate.Prepare()
 
-	_, err = venueUpdate.UpdateVenue(id)
+	_, err = venueUpdate.UpdateVenue(id, a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
@@ -110,7 +110,7 @@ func UpdateVenue(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func DeleteVenue(w http.ResponseWriter, r *http.Request) {
+func (a *App) DeleteVenue(w http.ResponseWriter, r *http.Request) {
 	var resp = map[string]interface{}{"status": "success", "message": "Venue deleted successfully"}
 
 	vars := mux.Vars(r)
@@ -120,7 +120,7 @@ func DeleteVenue(w http.ResponseWriter, r *http.Request) {
 
 	id, _ := strconv.Atoi(vars["id"])
 
-	venue, err := models.GetVenueById(id)
+	venue, err := models.GetVenueById(id, a.DB)
 
 	if venue.UserID != userID {
 		resp["status"] = "failed"
@@ -129,7 +129,7 @@ func DeleteVenue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = models.DeleteVenue(id)
+	err = models.DeleteVenue(id, a.DB)
 	if err != nil {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return

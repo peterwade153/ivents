@@ -51,50 +51,55 @@ func (v *Venue) Validate(action string) error {
 	}
 }
 
-func (v *Venue) Save() (*Venue, error) {
+func (v *Venue) Save(db *gorm.DB) (*Venue, error) {
 	var err error
 
 	// Debug a single operation, show detailed log for this operation
-	err = GetDb().Debug().Create(&v).Error
+	err = db.Debug().Create(&v).Error
 	if err != nil {
 		return &Venue{}, err
 	}
 	return v, nil
 }
 
-func (v *Venue) GetVenue() (*Venue, error) {
+func (v *Venue) GetVenue(db *gorm.DB) (*Venue, error) {
 	venue := &Venue{}
-	if err := GetDb().Debug().Table("venues").Where("name = ?", v.Name).First(venue).Error; err != nil {
+	if err := db.Debug().Table("venues").Where("name = ?", v.Name).First(venue).Error; err != nil {
 		return nil, err
 	}
 	return venue, nil
 }
 
-func GetVenues() (*[]Venue, error) {
+func GetVenues(db *gorm.DB) (*[]Venue, error) {
 	venues := []Venue{}
-	if err := GetDb().Debug().Table("venues").Find(&venues).Error; err != nil {
+	if err := db.Debug().Table("venues").Find(&venues).Error; err != nil {
 		return &[]Venue{}, err
 	}
 	return &venues, nil
 }
 
-func GetVenueById(id int) (*Venue, error) {
+func GetVenueById(id int, db *gorm.DB) (*Venue, error) {
 	venue := &Venue{}
-	if err := GetDb().Debug().Table("venues").Where("id = ?", id).First(venue).Error; err != nil {
+	if err := db.Debug().Table("venues").Where("id = ?", id).First(venue).Error; err != nil {
 		return nil, err
 	}
 	return venue, nil
 }
 
-func (v *Venue) UpdateVenue(id int) (*Venue, error) {
-	if err := GetDb().Debug().Table("venues").Where("id = ?", id).Updates(Venue{Name: v.Name, Description: v.Description, Location: v.Location, Capacity: v.Capacity, Category: v.Category}).Error; err != nil {
+func (v *Venue) UpdateVenue(id int, db *gorm.DB) (*Venue, error) {
+	if err := db.Debug().Table("venues").Where("id = ?", id).Updates(Venue{
+		Name: v.Name, 
+		Description: v.Description, 
+		Location: v.Location, 
+		Capacity: v.Capacity, 
+		Category: v.Category}).Error; err != nil {
 		return &Venue{}, err
 	}
 	return v, nil
 }
 
-func DeleteVenue(id int) error {
-	if err := GetDb().Debug().Table("venues").Where("id = ?", id).Delete(&Venue{}).Error; err != nil {
+func DeleteVenue(id int, db *gorm.DB) error {
+	if err := db.Debug().Table("venues").Where("id = ?", id).Delete(&Venue{}).Error; err != nil {
 		return err
 	}
 	return nil
