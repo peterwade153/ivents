@@ -38,6 +38,7 @@ func TestMain(m *testing.M) {
 
 	tearDown(a.DB)
 	seedUsers(a.DB)
+	seedVenues(a.DB)
 
 	os.Exit(m.Run())
 }
@@ -61,9 +62,6 @@ func tearDown(db *gorm.DB) error {
 func seedUsers(db *gorm.DB) ([]models.User, error) {
 
 	var err error
-	if err != nil {
-		return nil, err
-	}
 	users := []models.User{
 		models.User{
 			FirstName: "Steven",
@@ -79,12 +77,39 @@ func seedUsers(db *gorm.DB) ([]models.User, error) {
 		},
 	}
 	for i := range users {
-		err := db.Model(&models.User{}).Create(&users[i]).Error
+		err = db.Model(&models.User{}).Create(&users[i]).Error
 		if err != nil {
 			return []models.User{}, err
 		}
 	}
 	return users, nil
+}
+
+func seedVenues(db *gorm.DB) ([]models.Venue, error) {
+	var err error
+	venues := []models.Venue{
+		models.Venue{
+			Name: "weconnect",
+			Description: "building houses",
+			Location: "kasese",
+			Capacity: 29,
+			Category:  "indoor",
+		},
+		models.Venue{
+			Name: "mandela",
+			Description: "location found",
+			Location: "kampala",
+			Capacity: 400,
+			Category: "outdoor",
+		},
+	}
+	for i := range venues {
+		err =db.Model(&models.Venue{}).Create(&venues[i]).Error
+		if err != nil {
+			return []models.Venue{}, err
+		}
+	}
+	return venues, nil
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
