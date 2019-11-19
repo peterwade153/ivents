@@ -110,6 +110,6 @@ func (a *App) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	responses.JSON(w, http.StatusCreated, users)
+	responses.JSON(w, http.StatusOK, users)
 	return
 }

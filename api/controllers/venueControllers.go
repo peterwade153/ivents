@@ -106,7 +106,7 @@ func (a *App) UpdateVenue(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responses.JSON(w, http.StatusCreated, resp)
+	responses.JSON(w, http.StatusOK, resp)
 	return
 }
 

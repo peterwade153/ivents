@@ -27,7 +27,7 @@ func (a *App) Initialize(DbHost, DbPort, DbUser, DbName, DbPassword string) {
 	a.DB, err = gorm.Open("postgres", DBURI)
 
 	if err != nil {
-		fmt.Printf("Cannot connect to database %s", DbName)
+		fmt.Printf("\n Cannot connect to database %s", DbName)
 		log.Fatal("This is the error:", err)
 	} else {
 		fmt.Printf("We are connected to the database %s", DbName)
@@ -56,9 +56,9 @@ func (a *App) initializeRoutes() {
 	s.HandleFunc("/venues/{id}", a.DeleteVenue).Methods("DELETE")
 }
 
-func (a *App) RunServer(port string) {
-	log.Printf("\nServer starting on port '%s'", port)
-	log.Fatal(http.ListenAndServe(":"+port, a.Router))
+func (a *App) RunServer() {
+	log.Printf("\nServer starting on port 5000")
+	log.Fatal(http.ListenAndServe(":5000", a.Router))
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
