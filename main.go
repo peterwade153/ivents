@@ -22,7 +22,5 @@ func main() {
 		os.Getenv("DB_NAME"),
 		os.Getenv("DB_PASSWORD"))
 
-	port := os.Getenv("PORT")
-
-	app.RunServer(port)
+	app.RunServer()
 }
