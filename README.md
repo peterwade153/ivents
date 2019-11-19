@@ -33,8 +33,7 @@ GET     |  /api/venues                    |   View Venues
 PUT     |  /api/venues/id                 |   Update Venue  ( name, description, location, capacity, category)
 DELETE  |  /api/venues/id                 |   Delete Venue
 
-### Running test
-Change directory into ivents then
+### Running tests
 <pre>
 $ go test ./...
 </pre>
