@@ -134,6 +134,6 @@ func (a *App) DeleteVenue(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
-	responses.JSON(w, http.StatusUnauthorized, resp)
+	responses.JSON(w, http.StatusOK, resp)
 	return
 }
