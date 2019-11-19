@@ -15,6 +15,14 @@ func TestCreateUser(t *testing.T){
 	checkResponseCode(t, http.StatusCreated, response.Code)
 }
 
+func TestCreateUserWithExistingEmail(t *testing.T){
+	var dummydata = []byte (`{"firstname":"james", "lastname":"low", "password":"gdshdshsd", "email":"steven@gmail.com"}`)
+	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(dummydata))
+
+	response := executeRequest(req)
+	checkResponseCode(t, http.StatusBadRequest, response.Code)
+}
+
 func TestLoginUser(t *testing.T){
 	var dummydata = []byte (`{"password":"password", "email":"steven@gmail.com"}`)
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(dummydata))
