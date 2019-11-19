@@ -21,7 +21,11 @@ var a controllers.App
 func TestMain(m *testing.M) {
 
 	if err := godotenv.Load(os.ExpandEnv("../../.env")); err != nil {
-		log.Fatal("Error loading .env file")
+		os.Setenv("DB_HOST", "localhost")
+		os.Setenv("DB_PORT", "5432")
+		os.Setenv("DB_USER", "postgres")
+		os.Setenv("DB_TEST_NAME", "postgres")
+		os.Setenv("DB_PASSWORD", "postgres")
 	}
 
 	a = controllers.App{}
