@@ -52,8 +52,8 @@ func (a *App) initializeRoutes() {
 	s.HandleFunc("/users", a.GetAllUsers).Methods("GET")
 	s.HandleFunc("/venues", a.CreateVenue).Methods("POST")
 	s.HandleFunc("/venues", a.GetVenues).Methods("GET")
-	s.HandleFunc("/venues/{id}", a.UpdateVenue).Methods("PUT")
-	s.HandleFunc("/venues/{id}", a.DeleteVenue).Methods("DELETE")
+	s.HandleFunc("/venues/{id:[0-9]+}", a.UpdateVenue).Methods("PUT")
+	s.HandleFunc("/venues/{id:[0-9]+}", a.DeleteVenue).Methods("DELETE")
 }
 
 func (a *App) RunServer() {
