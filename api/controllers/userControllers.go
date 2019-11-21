@@ -77,7 +77,12 @@ func (a *App) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	usr, _ := user.GetUser(a.DB)
+	usr, err := user.GetUser(a.DB)
+	if err != nil {
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+
 	if usr == nil { // user is not registered
 		resp["status"] = "failed"
 		resp["message"] = "Login failed, please signup"

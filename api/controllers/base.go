@@ -25,7 +25,6 @@ func (a *App) Initialize(DbHost, DbPort, DbUser, DbName, DbPassword string) {
 	DBURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", DbHost, DbPort, DbUser, DbName, DbPassword)
 
 	a.DB, err = gorm.Open("postgres", DBURI)
-
 	if err != nil {
 		fmt.Printf("\n Cannot connect to database %s", DbName)
 		log.Fatal("This is the error:", err)

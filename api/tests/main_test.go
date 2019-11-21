@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
-	"testing"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"testing"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres
@@ -89,22 +89,22 @@ func seedVenues(db *gorm.DB) ([]models.Venue, error) {
 	var err error
 	venues := []models.Venue{
 		models.Venue{
-			Name: "weconnect",
+			Name:        "weconnect",
 			Description: "building houses",
-			Location: "kasese",
-			Capacity: 29,
-			Category:  "indoor",
+			Location:    "kasese",
+			Capacity:    29,
+			Category:    "indoor",
 		},
 		models.Venue{
-			Name: "mandela",
+			Name:        "mandela",
 			Description: "location found",
-			Location: "kampala",
-			Capacity: 400,
-			Category: "outdoor",
+			Location:    "kampala",
+			Capacity:    400,
+			Category:    "outdoor",
 		},
 	}
 	for i := range venues {
-		err =db.Model(&models.Venue{}).Create(&venues[i]).Error
+		err = db.Model(&models.Venue{}).Create(&venues[i]).Error
 		if err != nil {
 			return []models.Venue{}, err
 		}

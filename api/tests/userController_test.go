@@ -1,38 +1,38 @@
 package main
 
 import (
-	"encoding/json"
 	"bytes"
-	"testing"
+	"encoding/json"
 	"net/http"
+	"testing"
 )
 
-func TestCreateUser(t *testing.T){
-	var dummydata = []byte (`{"firstname":"james", "lastname":"low", "password":"gdshdshsd", "email":"jlow@yuj.com"}`)
+func TestCreateUser(t *testing.T) {
+	var dummydata = []byte(`{"firstname":"james", "lastname":"low", "password":"gdshdshsd", "email":"jlow@yuj.com"}`)
 	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(dummydata))
 
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusCreated, response.Code)
 }
 
-func TestCreateUserWithExistingEmail(t *testing.T){
-	var dummydata = []byte (`{"firstname":"james", "lastname":"low", "password":"gdshdshsd", "email":"steven@gmail.com"}`)
+func TestCreateUserWithExistingEmail(t *testing.T) {
+	var dummydata = []byte(`{"firstname":"james", "lastname":"low", "password":"gdshdshsd", "email":"steven@gmail.com"}`)
 	req, _ := http.NewRequest("POST", "/register", bytes.NewBuffer(dummydata))
 
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusBadRequest, response.Code)
 }
 
-func TestLoginUser(t *testing.T){
-	var dummydata = []byte (`{"password":"password", "email":"steven@gmail.com"}`)
+func TestLoginUser(t *testing.T) {
+	var dummydata = []byte(`{"password":"password", "email":"steven@gmail.com"}`)
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(dummydata))
 
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
-func TestGetUsers(t *testing.T){
-	var dummydata = []byte (`{"password":"password", "email":"steven@gmail.com"}`)
+func TestGetUsers(t *testing.T) {
+	var dummydata = []byte(`{"password":"password", "email":"steven@gmail.com"}`)
 	req, _ := http.NewRequest("POST", "/login", bytes.NewBuffer(dummydata))
 	response := executeRequest(req)
 
