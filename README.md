@@ -30,6 +30,7 @@ POST    |  /register                      |   User Signup   ( firstname, lastnam
 POST    |  /login                         |   User Login    ( email, password)
 POST    |  /api/venues                    |   Add Venue     ( name, description, location, capacity, category)
 GET     |  /api/venues                    |   View Venues
+GET     |  /api/venues/id                 |   View Venue
 PUT     |  /api/venues/id                 |   Update Venue  ( name, description, location, capacity, category)
 DELETE  |  /api/venues/id                 |   Delete Venue
 
