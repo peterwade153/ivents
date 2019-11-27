@@ -32,7 +32,7 @@ func (a *App) CreateVenue(w http.ResponseWriter, r *http.Request) {
 
 	venue.Prepare()
 
-	if err = venue.Validate(""); err != nil {
+	if err = venue.Validate(); err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
@@ -64,6 +64,19 @@ func (a *App) GetVenues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	responses.JSON(w, http.StatusOK, venues)
+	return
+}
+
+func (a *App) GetVenue(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, _ := strconv.Atoi(vars["id"])
+
+	venue, err := models.GetVenueById(id, a.DB)
+	if err != nil {
+		responses.ERROR(w, http.StatusInternalServerError, err)
+		return
+	}
+	responses.JSON(w, http.StatusOK, venue)
 	return
 }
 

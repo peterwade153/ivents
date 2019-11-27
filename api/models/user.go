@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// User user model
+// User model
 type User struct {
 	gorm.Model
 	Email        string `gorm:"type:varchar(100);unique_index" json:"email"`
@@ -19,13 +19,13 @@ type User struct {
 	ProfileImage string `gorm:"size:255"                       json:"profileimage"`
 }
 
-// HashPassword password hashing
+// HashPassword hashes password from user input
 func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14) // 14 is the cost for hashing the password.
 	return string(bytes), err
 }
 
-// CheckPasswordHash enables checking password hash and match password passed
+// CheckPasswordHash checks password hash and password from user input if they match
 func CheckPasswordHash(password, hash string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	if err != nil {
@@ -34,7 +34,7 @@ func CheckPasswordHash(password, hash string) error {
 	return nil
 }
 
-// BeforeSave will enables password hashing
+// BeforeSave will enable password hashing
 func (u *User) BeforeSave() error {
 	password := strings.TrimSpace(u.Password)
 	hashedpassword, err := HashPassword(password)
@@ -45,7 +45,7 @@ func (u *User) BeforeSave() error {
 	return nil
 }
 
-// Prepare will enable cleaning of data
+// Prepare will enable cleaning of user input
 func (u *User) Prepare() {
 	u.Email = strings.TrimSpace(u.Email)
 	u.FirstName = strings.TrimSpace(u.FirstName)
@@ -53,7 +53,7 @@ func (u *User) Prepare() {
 	u.ProfileImage = strings.TrimSpace(u.ProfileImage)
 }
 
-// Validate validated data for login, profile update, picture upload, create users
+// Validate user input
 func (u *User) Validate(action string) error {
 	switch strings.ToLower(action) {
 	case "login":

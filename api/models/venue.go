@@ -25,31 +25,25 @@ func (v *Venue) Prepare() {
 	v.CreatedBy = User{}
 }
 
-func (v *Venue) Validate(action string) error {
-	switch strings.ToLower(action) {
-	case "update":
-		{
-			return nil
-		}
-	default:
-		if v.Name == "" {
-			return errors.New("Name is required")
-		}
-		if v.Description == "" {
-			return errors.New("Description about venue is required")
-		}
-		if v.Location == "" {
-			return errors.New("Location of venue is required")
-		}
-		if v.Category == "" {
-			return errors.New("Category of venue is required")
-		}
-		if v.Capacity < 0 {
-			return errors.New("Capacity of venue is invalid")
-		}
-		return nil
+func (v *Venue) Validate() error {
+	if v.Name == "" {
+		return errors.New("Name is required")
 	}
+	if v.Description == "" {
+		return errors.New("Description about venue is required")
+	}
+	if v.Location == "" {
+		return errors.New("Location of venue is required")
+	}
+	if v.Category == "" {
+		return errors.New("Category of venue is required")
+	}
+	if v.Capacity < 0 {
+		return errors.New("Capacity of venue is invalid")
+	}
+	return nil
 }
+
 
 func (v *Venue) Save(db *gorm.DB) (*Venue, error) {
 	var err error
