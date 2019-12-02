@@ -96,7 +96,7 @@ func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	return u, nil
 }
 
-// GetUser returns based on email 
+// GetUser returns based on email
 func (u *User) GetUser(db *gorm.DB) (*User, error) {
 	account := &User{}
 	if err := db.Debug().Table("users").Where("email = ?", u.Email).First(account).Error; err != nil {

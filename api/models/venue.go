@@ -44,7 +44,6 @@ func (v *Venue) Validate() error {
 	return nil
 }
 
-
 func (v *Venue) Save(db *gorm.DB) (*Venue, error) {
 	var err error
 

@@ -54,7 +54,6 @@ func TestGetVenue(t *testing.T) {
 	newresponse := executeRequest(newreq)
 	checkResponseCode(t, http.StatusCreated, newresponse.Code)
 
-
 	getreq, _ := http.NewRequest("GET", "/api/venues/1", nil)
 	getreq.Header.Set("Authorization", res["token"])
 	getresponse := executeRequest(getreq)
@@ -72,7 +71,7 @@ func TestGetNonExistentVenue(t *testing.T) {
 	var res map[string]string
 	json.Unmarshal(response.Body.Bytes(), &res)
 
-    // we shall use a random venue id
+	// we shall use a random venue id
 	getreq, _ := http.NewRequest("GET", "/api/venues/7", nil)
 	getreq.Header.Set("Authorization", res["token"])
 	getresponse := executeRequest(getreq)
