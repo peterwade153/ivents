@@ -45,7 +45,7 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/register", a.UserSignUp).Methods("POST")
 	a.Router.HandleFunc("/login", a.Login).Methods("POST")
 
-	s := a.Router.PathPrefix("/api").Subrouter() // routes that require authentication
+	s := a.Router.PathPrefix("/api").Subrouter() // subrouter to add auth middleware
 	s.Use(middlewares.AuthJwtVerify)
 
 	s.HandleFunc("/users", a.GetAllUsers).Methods("GET")

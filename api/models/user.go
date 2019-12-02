@@ -34,7 +34,7 @@ func CheckPasswordHash(password, hash string) error {
 	return nil
 }
 
-// BeforeSave will enable password hashing
+// BeforeSave hashes user password
 func (u *User) BeforeSave() error {
 	password := strings.TrimSpace(u.Password)
 	hashedpassword, err := HashPassword(password)
@@ -45,7 +45,7 @@ func (u *User) BeforeSave() error {
 	return nil
 }
 
-// Prepare will enable cleaning of user input
+// Prepare strips user input opf any white spaces
 func (u *User) Prepare() {
 	u.Email = strings.TrimSpace(u.Email)
 	u.FirstName = strings.TrimSpace(u.FirstName)
@@ -84,7 +84,7 @@ func (u *User) Validate(action string) error {
 	}
 }
 
-// SaveUser saves user to the database
+// SaveUser adds user to the database
 func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	var err error
 
@@ -96,7 +96,7 @@ func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	return u, nil
 }
 
-// GetUser checks if user exists already
+// GetUser returns based on email 
 func (u *User) GetUser(db *gorm.DB) (*User, error) {
 	account := &User{}
 	if err := db.Debug().Table("users").Where("email = ?", u.Email).First(account).Error; err != nil {
@@ -105,7 +105,7 @@ func (u *User) GetUser(db *gorm.DB) (*User, error) {
 	return account, nil
 }
 
-// GetAllUsers returns all the user
+// GetAllUsers returns a list all the user
 func GetAllUsers(db *gorm.DB) (*[]User, error) {
 	users := []User{}
 	if err := db.Debug().Table("users").Find(&users).Error; err != nil {
